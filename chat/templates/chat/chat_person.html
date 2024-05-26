@@ -1,0 +1,356 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Person</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            border: 0;
+            display: grid;
+            grid-template-rows: auto auto auto;
+            align-content: space-between;
+            height: 100dvh;
+        }
+        a{
+            text-decoration: none;
+        }
+        header{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+            padding: 5px;
+            background-color: rgb(225, 225, 225);
+            position: relative;
+        }
+        header div{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            padding: 5px;
+            background-color: rgb(225, 225, 225);
+            position: relative;
+        }
+        header img{
+            padding: 2.5px;
+            border-width: 2.5px;
+            border-color: rgb(0, 0, 0);
+            border-style: solid;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            background-color: rgb(255, 255, 255);
+            margin: 0;
+        }
+        header p{
+            color: rgb(35, 35, 35);
+            margin: 0;
+            padding: 2.5px;
+        }
+        header button{
+            margin: 0;
+            border: 0;
+            border-radius: 10px;
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
+            width: 60px;
+            height: 30px;
+            font-size: 12px;
+        }
+        header button:hover{
+            background-color: rgb(66, 66, 66);
+        }
+
+        header button:active{
+            background-color: rgb(15, 15, 15);
+        }
+        .name-of-sender{
+            border-radius: 10px;
+            background-color: rgb(200, 0, 0);
+            padding: 10px;
+            color: rgb(255, 255, 255);
+
+            font-weight: bold;
+        }
+        main{
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+            margin: 5px;
+            padding: 5px;
+            max-width: 100%;
+        }
+        main section{
+            display: flex;
+            flex-direction: column;
+            margin: 5px;
+            padding: 5px;
+        }
+        main section > div{
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        main .to{
+            margin-right: 8%;
+        }
+        main .to .details{
+            display: grid;
+            grid-template-columns: auto auto auto;
+            border-top-right-radius: 15px;
+            border-top-left-radius: 15px;
+            background-color: #1fd11f;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        main .to .details > p{
+            font-size: 12px;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            margin: 0;
+            padding: 2.5px;
+            border: 0;
+        }
+        main .to .message{
+            display: flex;
+            border-bottom-right-radius: 15px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background-color: #6bf46b; /* Light green */
+        }
+        main .to .message > p{
+            color: rgb(255, 255, 255);
+            margin: 0;
+            padding: 10px;
+            border: 0;
+            text-wrap: wrap;
+            text-overflow: clip;
+        }
+        main .from{
+            margin-left: 8%;
+        }
+        main .from .details{
+            display: grid;
+            grid-template-columns: auto auto;
+            border-top-right-radius: 15px;
+            border-top-left-radius: 15px;
+            background-color: lightcoral;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        main .from .details > p{
+            font-size: 12px;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            margin: 0;
+            padding: 2.5px;
+            border: 0;
+        }
+        main .from .message{
+            display: flex;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 15px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background-color: rgb(255, 191, 191); /* Light red */
+        }
+        main .from .message > p{
+            color: rgb(255, 255, 255);
+            margin: 0;
+            padding: 10px;
+            border: 0;
+            text-wrap: wrap;
+        }
+        footer{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+            padding: 5px;
+        }
+        footer > button{
+            margin: 0;
+            border: 0;
+            border-radius: 10px;
+            background-color: rgb(55, 15, 135);
+            color: rgb(255, 255, 255);
+            width: 65px;
+            height: 35px;
+            margin: 5px;
+        }
+        footer > button:hover{
+            background-color: rgb(117, 72, 207);
+        }
+        footer > button:active{
+            background-color: rgb(41, 13, 97);
+        }
+        footer > textarea{
+            margin: 5px;
+            padding: 5px;
+            border-radius: 10px;
+            border-color: rgb(0, 0, 0);
+            border-width: 2.5px;
+            border-style: solid;
+            max-height: 200px;
+            font-size: small;
+            text-align: right;
+            flex-grow: 1;
+        }
+        .details .status{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .details .status div{
+            margin: 2.5px;
+            width: 5.5px;
+            height: 5.5px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 50%;
+        }
+        .details .seen div{
+            background-color: rgb(0, 215, 255);
+        }
+        .details .not-send div{
+            background-color: rgb(0, 0, 0);
+        }
+        .details .failed-send div{
+            background-color: rgb(255, 0, 0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url "home" %}"><button>Back</button></a>
+        <div>
+            <img src="{% static "profile.png" %}">
+            <p>{{person.username}}</p>
+        </div>
+        <p class="name-of-sender">Me : {{me.username}}</p>
+    </header>
+   
+    <main id="messages-area">
+        {% for message in messages %}
+            {% if message.from_who == me %}
+                <section class="to">
+                    <div class="details">
+                        <p>{{message.date}}</p>
+                        {% if message.has_been_seen %}
+                        <div class="status seen"><div></div><div></div></div>
+                        {% else %}
+                        <div class="status "><div></div><div></div></div>
+                        {% endif %}
+                        
+                        <p>{{message.time}}</p>
+                    </div>
+                    <div class="message">
+                        <p style="overflow-wrap: anywhere;">{{message.message}}</p>
+                    </div>
+                </section>
+            {% elif message.from_who == person %}
+            <section class="from">
+                <div class="details">
+                    <p>{{message.date}}</p>
+                    <p>{{message.time}}</p>
+                </div>
+                <div class="message">
+                    <p style="overflow-wrap: anywhere;">{{message.message}}</p>
+                </div>
+            </section>
+            {% endif %}
+        {% endfor %}
+        
+
+        
+    </main>
+  
+    <footer>
+        <textarea name="text" oninput="this.style.height = ''; this.style.height = this.scrollHeight +'px'" id="text-area"></textarea>
+        <button id="send-message-button">Send</button>
+    </footer>
+    <script>
+        function escapeSpecialChars(str) {
+            return str.replace(/\\n/g, '\\\\n')
+                      .replace(/\\'/g, '\\\'')
+                      .replace(/\\"/g, '\\\"')
+                      .replace(/\\&/g, '\\&')
+                      .replace(/\\r/g, '\\\\r')
+                      .replace(/\\t/g, '\\\\t')
+                      .replace(/\\b/g, '\\\\b')
+                      .replace(/\\f/g, '\\\\f');
+        }
+        const person_id = {{person.id}};
+        const url = `ws://127.0.0.1:8000/websocket/${person_id}/`;
+        const webSocket = new WebSocket(url);
+        const textArea = document.getElementById('text-area');
+        const mesasgeArea = document.getElementById('messages-area');
+        const sendButton = document.getElementById('send-message-button');
+        sendButton.addEventListener('click', function(){
+            const message = escapeSpecialChars(textArea.value);
+            const jsonMessage = JSON.stringify({
+                type: "text_message",
+                message: message
+            });
+
+            webSocket.send(jsonMessage);
+
+            const date = new Date();
+            const currentDate = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+            const currentTime = date.toTimeString().split(' ')[0]; // Format: HH:MM:SS
+            //webSocket.send(`{"type": "text_message", "message": "${textArea.value}"}`);
+            mesasgeArea.insertAdjacentHTML('beforeend', `<section class="to">
+                <div class="details">
+                    <p>${currentDate}</p>
+                    <div class="status"><div></div><div></div></div>
+                    <p>${currentTime}</p>
+                </div>
+                <div class="message">
+                    <p style="overflow-wrap: anywhere;">${textArea.value}</p>
+                </div>
+            </section>`);
+            textArea.value = "";
+            
+
+        });
+        
+        webSocket.onmessage = function(e){
+            const response = JSON.parse(e.data);
+            const date = new Date();
+            const currentDate = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+            const currentTime = date.toTimeString().split(' ')[0]; // Format: HH:MM:SS
+            if(response.message_type === "text"){
+                mesasgeArea.insertAdjacentHTML('beforeend', `<section class="from">
+                    <div class="details">
+                        <p>${currentDate}</p>
+                        <p>${currentTime}</p>
+                    </div>
+                    <div class="message">
+                        <p style="overflow-wrap: anywhere;">${response.message}</p>
+                    </div>
+                </section>`);
+                webSocket.send(JSON.stringify({type:"has_been_seen"}))
+            }else if(response.message_type === "has_been_seen_by_other_person"){
+                // other person have been seen
+                const has_been_seen = document.getElementsByClassName("status");
+
+                for(let i=0; has_been_seen.length > i; i++){
+                    has_been_seen[i].classList.add("seen");
+                }
+            }
+            
+            
+        }
+    </script>
+</body>
+</html>

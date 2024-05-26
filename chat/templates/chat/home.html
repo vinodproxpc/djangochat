@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            border: 0;
+        }
+
+        a{
+            text-decoration: none;
+        }
+
+        header{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            background-color: rgb(225, 225, 225);
+        }
+
+        header p{
+            font-weight: bolder;
+            color: rgb(0, 135, 175);
+            margin: 10px;
+        }
+
+        header button{
+            margin: 10px;
+            border: 0;
+            border-radius: 10px;
+            background-color: rgb(185, 0, 0);
+            color: rgb(255, 255, 255);
+            width: 125px;
+            height: 35px;
+        }
+        header button:hover{
+            background-color: rgb(228, 0, 0);
+        }
+
+        header button:active{
+            background-color: rgb(139, 0, 0);
+        }
+
+        
+        .user-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .user-list li {
+            margin: 10px;
+            width: calc(33.33% - 20px); /* Calculate width based on 3 columns and margin */
+            text-align: center;
+        }
+        
+        .user-list li a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .user-list li section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .user-list li img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 5px;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .user-list li {
+                width: calc(50% - 20px); /* Adjust width for 2 columns on smaller screens */
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .user-list li {
+                width: 100%; /* Single column on very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <p>Username : {{request.user.username}}</p>
+        <p>Name : {{request.user.first_name}} {{request.user.last_name}}</p>
+        <a href="{% url "logout" %}"><button>Logout</button></a>
+    </header>
+    
+    <main>
+        <div class="error">
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{message}}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <h1>User List</h1>
+        <ul class="user-list">
+            {% for user in users %}
+            <li>
+                <a href="{% url "chat_person" user.id %}">
+                    <section>
+                        <img src="{% static "profile.png" %}"> <p>{{ user.username }}</p>
+                    </section>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </main>
+   
+
+</body>
+</html>
